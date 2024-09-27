@@ -65,7 +65,7 @@ public class FoodController {
             return foods;
         }
     }
-
+    @GetMapping("/group/{novaClasification}")
     public List<Food> getFoodByNovaClasification(@PathVariable NovaClasification novaClasification) {
         List<Food> foods = foodService.getFoodByNovaClasification(novaClasification);
         if (foods.isEmpty()) {

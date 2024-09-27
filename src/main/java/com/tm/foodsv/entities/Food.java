@@ -14,7 +14,7 @@ public class Food {
     private String name;
     private URL image;
     private Category category;
-    @Column(name = "nova_clasification")
+    @Column(name = "nova_group")
     @JsonProperty("nova_group")
     private NovaClasification novaClasification;
     private int calories;
