@@ -1,5 +1,6 @@
 package com.tm.foodsv.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.net.URL;
@@ -13,6 +14,8 @@ public class Food {
     private String name;
     private URL image;
     private Category category;
+    @Column(name = "nova_clasification")
+    @JsonProperty("nova_group")
     private NovaClasification novaClasification;
     private int calories;
     private double protein;
@@ -20,6 +23,7 @@ public class Food {
     private double carbs;
     private double sugar;
     private double sodium;
+
 
     public long getId() {
         return id;
@@ -99,6 +103,13 @@ public class Food {
 
     public void setSugar(double sugar) {
         this.sugar = sugar;
+    }
+    public NovaClasification getNovaClasification() {
+        return novaClasification;
+    }
+
+    public void setNovaClasification(NovaClasification novaClasification) {
+        this.novaClasification = novaClasification;
     }
 
     @Override

@@ -2,10 +2,12 @@ package com.tm.foodsv.controllers;
 
 import com.tm.foodsv.entities.Category;
 import com.tm.foodsv.entities.Food;
+import com.tm.foodsv.entities.NovaClasification;
 import com.tm.foodsv.services.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -32,13 +34,44 @@ public class FoodController {
         foodService.addFood(food);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping("/update")
+    public void updateFood(@RequestBody Food food) {
+        foodService.updateFood(food);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/delete/{id}")
+    public void deleteFood(@PathVariable int id) {
+        foodService.deleteFoodById(id);
+    }
+
     @GetMapping("/name/{name}")
     public List<Food> getFoodByName(@PathVariable String name) {
-        return foodService.getFoodByName(name);
+        List<Food> foods = foodService.getFoodByName(name);
+        if (foods.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Food not found");
+        } else {
+            return foods;
+        }
     }
 
     @GetMapping("/category/{category}")
     public List<Food> getFoodByCategory(@PathVariable Category category) {
-        return foodService.getFoodByCategory(category);
+        List<Food> foods = foodService.getFoodByCategory(category);
+        if (foods.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No food found in this category");
+        } else {
+            return foods;
+        }
+    }
+
+    public List<Food> getFoodByNovaClasification(@PathVariable NovaClasification novaClasification) {
+        List<Food> foods = foodService.getFoodByNovaClasification(novaClasification);
+        if (foods.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No food found in this nova group");
+        } else {
+            return foods;
+        }
     }
 }

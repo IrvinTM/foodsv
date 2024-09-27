@@ -2,6 +2,7 @@ package com.tm.foodsv.services;
 
 import com.tm.foodsv.entities.Category;
 import com.tm.foodsv.entities.Food;
+import com.tm.foodsv.entities.NovaClasification;
 import com.tm.foodsv.repositories.FoodRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -28,6 +29,10 @@ public class FoodService {
 
     public List<Food> getFoodByCategory(Category category) {
         return foodRepository.findByCategory(category);
+    }
+
+    public List<Food> getFoodByNovaClasification(NovaClasification novaClasification) {
+        return foodRepository.findByNovaClasification(novaClasification);
     }
 
     public void deleteFoodById(int id) {
