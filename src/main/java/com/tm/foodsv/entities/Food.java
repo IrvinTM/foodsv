@@ -2,8 +2,12 @@ package com.tm.foodsv.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.net.URL;
+import java.util.ArrayList;
+
 @Entity
 @Table(name = "foods")
 public class Food {
@@ -11,19 +15,34 @@ public class Food {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     private Long id;
+    @NotEmpty
     private String name;
+    @NotEmpty
     private URL image;
+    @NotNull
     private Category category;
     @Column(name = "nova_group")
     @JsonProperty("nova_group")
     private NovaClasification novaClasification;
+    @NotNull
     private int calories;
     private double protein;
     private double fats;
     private double carbs;
     private double sugar;
     private double sodium;
+    @JsonProperty("serving_size")
+    @Column(name = "serving_size")
+    private double servingSize;
+    private String warnings;
 
+    public double getServingSize() {
+        return servingSize;
+    }
+
+    public void setServingSize(double servingSize) {
+        this.servingSize = servingSize;
+    }
 
     public long getId() {
         return id;
@@ -110,6 +129,14 @@ public class Food {
 
     public void setNovaClasification(NovaClasification novaClasification) {
         this.novaClasification = novaClasification;
+    }
+
+    public String getWarnings() {
+        return warnings;
+    }
+
+    public void setWarnings(String warnings) {
+        this.warnings = warnings;
     }
 
     @Override
