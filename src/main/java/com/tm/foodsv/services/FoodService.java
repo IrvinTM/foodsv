@@ -3,22 +3,18 @@ package com.tm.foodsv.services;
 import com.tm.foodsv.entities.Category;
 import com.tm.foodsv.entities.Food;
 import com.tm.foodsv.entities.NovaClasification;
-import com.tm.foodsv.entities.Warnings;
+import com.tm.foodsv.util.LabelingSystem;
 import com.tm.foodsv.repositories.FoodRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class FoodService {
-    private final double MAX_SODIUM_PER_100G = 320;
-    private final double MAX_SODIUM_PER_BEVERAGE_NO_CALORIES = 45;
 
     private final FoodRepository foodRepository;
-    private final Warnings warnings;
 
-    public FoodService(FoodRepository foodRepository, Warnings warnings) {
+    public FoodService(FoodRepository foodRepository) {
         this.foodRepository = foodRepository;
-        this.warnings = warnings;
     }
 
     public List<Food> getAllFoods() {
@@ -26,11 +22,7 @@ public class FoodService {
     }
 
     public void addFood(Food food) {
-        if(food.getCategory() == Category.BEVERAGES){
-            if(food.getCalories() == 0 && food.getSodium() > MAX_SODIUM_PER_BEVERAGE_NO_CALORIES){
-                food.getWarnings().concat(warnings.HIGH_SODIUM.toString());
-            }
-        }
+        LabelingSystem.checkSodium(food);
         foodRepository.save(food);
     }
 

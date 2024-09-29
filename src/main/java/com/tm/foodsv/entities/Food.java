@@ -1,12 +1,13 @@
 package com.tm.foodsv.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tm.foodsv.util.Warnings;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "foods")
@@ -17,24 +18,33 @@ public class Food {
     private Long id;
     @NotEmpty
     private String name;
-    @NotEmpty
+    @NotNull
     private URL image;
     @NotNull
     private Category category;
     @Column(name = "nova_group")
     @JsonProperty("nova_group")
     private NovaClasification novaClasification;
-    @NotNull
+    @PositiveOrZero
     private int calories;
+    @PositiveOrZero
     private double protein;
+    @PositiveOrZero
     private double fats;
+    @PositiveOrZero
     private double carbs;
+    @PositiveOrZero
     private double sugar;
+    @PositiveOrZero
     private double sodium;
     @JsonProperty("serving_size")
     @Column(name = "serving_size")
+    @Positive
     private double servingSize;
-    private String warnings;
+    @ElementCollection
+    @CollectionTable(name = "food_warnings", joinColumns = @JoinColumn(name = "food_id"))
+    @Enumerated(EnumType.STRING)
+    private List<Warnings> warnings;
 
     public double getServingSize() {
         return servingSize;
@@ -131,11 +141,11 @@ public class Food {
         this.novaClasification = novaClasification;
     }
 
-    public String getWarnings() {
+    public List<Warnings> getWarnings() {
         return warnings;
     }
 
-    public void setWarnings(String warnings) {
+    public void setWarnings(List<Warnings> warnings) {
         this.warnings = warnings;
     }
 

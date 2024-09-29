@@ -1,4 +1,4 @@
-package com.tm.foodsv.entities;
+package com.tm.foodsv.util;
 
 public enum Warnings {
     HIGH_SODIUM,
@@ -6,5 +6,5 @@ public enum Warnings {
     HIGH_SUGAR,
     HIGH_FATS,
     HIGH_PROTEIN,
-    HIGH_CARBS
+    HIGH_CARBS,
 }
