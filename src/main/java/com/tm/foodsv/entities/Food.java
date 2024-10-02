@@ -30,7 +30,19 @@ public class Food {
     @PositiveOrZero
     private double protein;
     @PositiveOrZero
-    private double fats;
+    @JsonProperty("total_fats")
+    @Column(name = "total_fats")
+    private double TotalFats;
+    @PositiveOrZero
+    @JsonProperty("saturated_fats")
+    @Column(name = "saturated_fats")
+    private double saturatedFats;
+    @PositiveOrZero
+    @JsonProperty("trans_fats")
+    @Column(name = "trans_fats")
+    private double transFats;
+    @PositiveOrZero
+    private double cholesterol;
     @PositiveOrZero
     private double carbs;
     @PositiveOrZero
@@ -46,99 +58,126 @@ public class Food {
     @Column(name = "warning", nullable = false)
     private List<Warnings> warnings= new ArrayList<>();
 
-    public double getServingSize() {
-        return servingSize;
-    }
-
-    public void setServingSize(double servingSize) {
-        this.servingSize = servingSize;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
+    public @NotEmpty String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NotEmpty String name) {
         this.name = name;
     }
 
-    public URL getImage() {
+    public @NotNull URL getImage() {
         return image;
     }
 
-    public void setImage(URL image) {
+    public void setImage(@NotNull URL image) {
         this.image = image;
     }
 
-    public Category getCategory() {
+    public @NotNull Category getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(@NotNull Category category) {
         this.category = category;
     }
 
-    public int getCalories() {
-        return calories;
-    }
-
-    public void setCalories(int calories) {
-        this.calories = calories;
-    }
-
-    public double getProtein() {
-        return protein;
-    }
-
-    public void setProtein(double protein) {
-        this.protein = protein;
-    }
-
-    public double getFats() {
-        return fats;
-    }
-
-    public void setFats(double fats) {
-        this.fats = fats;
-    }
-
-    public double getSodium() {
-        return sodium;
-    }
-
-    public void setSodium(double sodium) {
-        this.sodium = sodium;
-    }
-
-    public double getCarbs() {
-        return carbs;
-    }
-
-    public void setCarbs(double carbs) {
-        this.carbs = carbs;
-    }
-
-    public double getSugar() {
-        return sugar;
-    }
-
-    public void setSugar(double sugar) {
-        this.sugar = sugar;
-    }
     public NovaClasification getNovaClasification() {
         return novaClasification;
     }
 
     public void setNovaClasification(NovaClasification novaClasification) {
         this.novaClasification = novaClasification;
+    }
+
+    @PositiveOrZero
+    public int getCalories() {
+        return calories;
+    }
+
+    public void setCalories(@PositiveOrZero int calories) {
+        this.calories = calories;
+    }
+
+    @PositiveOrZero
+    public double getProtein() {
+        return protein;
+    }
+
+    public void setProtein(@PositiveOrZero double protein) {
+        this.protein = protein;
+    }
+
+    @PositiveOrZero
+    public double getTotalFats() {
+        return TotalFats;
+    }
+
+    public void setTotalFats(@PositiveOrZero double totalFats) {
+        TotalFats = totalFats;
+    }
+
+    @PositiveOrZero
+    public double getSaturatedFats() {
+        return saturatedFats;
+    }
+
+    public void setSaturatedFats(@PositiveOrZero double saturatedFats) {
+        this.saturatedFats = saturatedFats;
+    }
+
+    @PositiveOrZero
+    public double getTransFats() {
+        return transFats;
+    }
+
+    public void setTransFats(@PositiveOrZero double transFats) {
+        this.transFats = transFats;
+    }
+
+    @PositiveOrZero
+    public double getCholesterol() {
+        return cholesterol;
+    }
+
+    public void setCholesterol(@PositiveOrZero double cholesterol) {
+        this.cholesterol = cholesterol;
+    }
+
+    @PositiveOrZero
+    public double getCarbs() {
+        return carbs;
+    }
+
+    public void setCarbs(@PositiveOrZero double carbs) {
+        this.carbs = carbs;
+    }
+
+    @PositiveOrZero
+    public double getSugar() {
+        return sugar;
+    }
+
+    public void setSugar(@PositiveOrZero double sugar) {
+        this.sugar = sugar;
+    }
+
+    @PositiveOrZero
+    public double getSodium() {
+        return sodium;
+    }
+
+    public void setSodium(@PositiveOrZero double sodium) {
+        this.sodium = sodium;
+    }
+
+    @Positive
+    public double getServingSize() {
+        return servingSize;
+    }
+
+    public void setServingSize(@Positive double servingSize) {
+        this.servingSize = servingSize;
     }
 
     public List<Warnings> getWarnings() {
