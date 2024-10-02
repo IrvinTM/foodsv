@@ -41,10 +41,10 @@ public class Food {
     @Column(name = "serving_size")
     @Positive
     private double servingSize;
-    @ElementCollection
-    @CollectionTable(name = "food_warnings", joinColumns = @JoinColumn(name = "food_id"))
-    @Enumerated(EnumType.STRING)
-    private List<Warnings> warnings;
+    @ElementCollection(targetClass = Warnings.class)
+    @CollectionTable(name = "warnings", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "warning", nullable = false)
+    private List<Warnings> warnings= new ArrayList<>();
 
     public double getServingSize() {
         return servingSize;

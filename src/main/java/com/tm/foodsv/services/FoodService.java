@@ -5,6 +5,7 @@ import com.tm.foodsv.entities.Food;
 import com.tm.foodsv.entities.NovaClasification;
 import com.tm.foodsv.util.LabelingSystem;
 import com.tm.foodsv.repositories.FoodRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class FoodService {
         return foodRepository.findAll();
     }
 
+    @Transactional
     public void addFood(Food food) {
         LabelingSystem.checkSodium(food);
         foodRepository.save(food);
