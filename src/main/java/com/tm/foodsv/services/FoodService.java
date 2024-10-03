@@ -24,7 +24,7 @@ public class FoodService {
 
     @Transactional
     public void addFood(Food food) {
-        LabelingSystem.checkSodium(food);
+        LabelingSystem.addLabels(food);
         foodRepository.save(food);
     }
 
@@ -45,6 +45,7 @@ public class FoodService {
     }
 
     public void updateFood(Food food) {
+        LabelingSystem.addLabels(food);
         foodRepository.save(food);
     }
 

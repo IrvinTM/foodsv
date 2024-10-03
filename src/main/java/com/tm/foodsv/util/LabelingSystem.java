@@ -9,7 +9,16 @@ public class LabelingSystem {
     public static final double MAX_SODIUM_PER_100G = 320;
     public static final double MAX_SODIUM_PER_BEVERAGE_NO_CALORIES = 45;
 
-    public static Food checkSodium(Food food){
+    public static Food addLabels(Food food){
+        food = checkSodium(food);
+        food = checkTransFats(food);
+        food = checkSaturatedFats(food);
+        food = checkSugar(food);
+        food = checkCalories(food);
+        return food;
+    }
+
+    private static Food checkSodium(Food food){
         // Empty the warnings map
         if(food.getCategory() == Category.BEVERAGES){
             if(food.getCalories() == 0 && food.getSodium() >= MAX_SODIUM_PER_BEVERAGE_NO_CALORIES){
@@ -28,7 +37,7 @@ public class LabelingSystem {
         return food;
     }
 
-    public static Food checkTransFats(Food food){
+    private static Food checkTransFats(Food food){
         double energyFromTransFatsPercentage = food.getTransFats() * 9 / food.getCalories() * 100;
         if (energyFromTransFatsPercentage > 1) {
             ArrayList<Warnings> w = (ArrayList<Warnings>) food.getWarnings();
@@ -37,7 +46,7 @@ public class LabelingSystem {
         return food;
     }
 
-    public static Food checkSaturatedFats(Food food){
+    private static Food checkSaturatedFats(Food food){
         double energyFromSaturatedFatsPercentage = food.getSaturatedFats() * 9 / food.getCalories() * 100;
         if (energyFromSaturatedFatsPercentage > 10) {
             ArrayList<Warnings> w = (ArrayList<Warnings>) food.getWarnings();
@@ -46,7 +55,7 @@ public class LabelingSystem {
         return food;
     }
 
-    public static Food checkSugar(Food food){
+    private static Food checkSugar(Food food){
         double energyFromSugarPercentage = ((food.getSugar() * 4) / food.getCalories()) * 100;
         if (energyFromSugarPercentage > 10) {
             ArrayList<Warnings> w = (ArrayList<Warnings>) food.getWarnings();
@@ -55,7 +64,7 @@ public class LabelingSystem {
         return food;
     }
 
-    public static  Food checkCalories(Food food){
+    private static Food checkCalories(Food food){
         if (food.getCategory() == Category.BEVERAGES) {
             double energyFromSugar = food.getSugar() * 4;
             double caloriesPer100Ml = (food.getCalories() / food.getServingSize()) * 100;
