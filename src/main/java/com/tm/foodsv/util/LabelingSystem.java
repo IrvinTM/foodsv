@@ -4,7 +4,6 @@ import com.tm.foodsv.entities.Category;
 import com.tm.foodsv.entities.Food;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class LabelingSystem {
     public static final double MAX_SODIUM_PER_100G = 320;
@@ -43,6 +42,34 @@ public class LabelingSystem {
         if (energyFromSaturatedFatsPercentage > 10) {
             ArrayList<Warnings> w = (ArrayList<Warnings>) food.getWarnings();
             w.add(Warnings.HIGH_SATURATED_FATS);
+        }
+        return food;
+    }
+
+    public static Food checkSugar(Food food){
+        double energyFromSugarPercentage = ((food.getSugar() * 4) / food.getCalories()) * 100;
+        if (energyFromSugarPercentage > 10) {
+            ArrayList<Warnings> w = (ArrayList<Warnings>) food.getWarnings();
+            w.add(Warnings.HIGH_SUGAR);
+        }
+        return food;
+    }
+
+    public static  Food checkCalories(Food food){
+        if (food.getCategory() == Category.BEVERAGES) {
+            double energyFromSugar = food.getSugar() * 4;
+            double caloriesPer100Ml = (food.getCalories() / food.getServingSize()) * 100;
+            if (caloriesPer100Ml > 70 || energyFromSugar > 8) {
+                ArrayList<Warnings> w = (ArrayList<Warnings>) food.getWarnings();
+                w.add(Warnings.HIGH_CALORIES);
+            }
+        }else {
+            double caloriesPer100g = (food.getCalories() / food.getServingSize()) * 100;
+
+            if (caloriesPer100g > 275) {
+                ArrayList<Warnings> w = (ArrayList<Warnings>) food.getWarnings();
+                w.add(Warnings.HIGH_CALORIES);
+            }
         }
         return food;
     }
