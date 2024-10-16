@@ -6,7 +6,10 @@ import com.tm.foodsv.entities.NovaClasification;
 import com.tm.foodsv.util.LabelingSystem;
 import com.tm.foodsv.repositories.FoodRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -18,14 +21,19 @@ public class FoodService {
         this.foodRepository = foodRepository;
     }
 
-    public List<Food> getAllFoods() {
-        return foodRepository.findAll();
+    public Page<Food> getAllFoods(PageRequest pageable) {
+        Page<Food> page = foodRepository.findAll(pageable);
+        return page;
     }
 
     @Transactional
     public void addFood(Food food) {
         LabelingSystem.addLabels(food);
-        foodRepository.save(food);
+        if (!foodRepository.findByName(food.getName()).isEmpty()) {
+            throw new IllegalStateException("Food with name " + food.getName() + " already exists");
+        }else {
+            foodRepository.save(food);
+        }
     }
 
     public List<Food> getFoodByName(String name) {

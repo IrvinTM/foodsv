@@ -4,15 +4,18 @@ import com.tm.foodsv.entities.Category;
 import com.tm.foodsv.entities.Food;
 import com.tm.foodsv.entities.NovaClasification;
 import com.tm.foodsv.services.FoodService;
+
+import org.springframework.data.domain.PageRequest;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/foods")
 public class FoodController {
@@ -25,8 +28,8 @@ public class FoodController {
     }
 
     @GetMapping
-    public List<Food> getFoods() {
-        return foodService.getAllFoods();
+    public Page<Food> getFoods(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        return foodService.getAllFoods(PageRequest.of(page, size));
     }
 
 
@@ -36,6 +39,7 @@ public class FoodController {
         foodService.addFood(food);
         return food;
     }
+
 
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("/update")
@@ -77,4 +81,5 @@ public class FoodController {
             return foods;
         }
     }
+    
 }
