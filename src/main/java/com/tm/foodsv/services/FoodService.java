@@ -57,4 +57,9 @@ public class FoodService {
         foodRepository.save(food);
     }
 
+    public Page<Food> getFoodByNameContainingAndCategory(String name, PageRequest pageable, List<Category> categories) {
+        Page<Food> page = foodRepository.findByNameContainingAndCategoryIn(name, categories, pageable); 
+        return page;
+    }
+
 }

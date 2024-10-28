@@ -4,6 +4,7 @@ import com.tm.foodsv.entities.Category;
 import com.tm.foodsv.entities.Food;
 import com.tm.foodsv.entities.NovaClasification;
 import com.tm.foodsv.services.FoodService;
+import com.tm.foodsv.util.PageDTO;
 
 import org.springframework.data.domain.PageRequest;
 import jakarta.validation.Valid;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-
 @CrossOrigin
 @RestController
 @RequestMapping("/api/foods")
@@ -82,4 +82,8 @@ public class FoodController {
         }
     }
     
+    @GetMapping("/search")
+    public Page<Food> getFoodByNameContainingAndCategory(@RequestParam String name, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @RequestParam List<Category> categories) {
+        return foodService.getFoodByNameContainingAndCategory(name, PageRequest.of(page, size), categories);
+    }
 }
