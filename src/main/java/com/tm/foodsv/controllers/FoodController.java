@@ -84,6 +84,9 @@ public class FoodController {
     
     @GetMapping("/search")
     public Page<Food> getFoodByNameContainingAndCategory(@RequestParam String name, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @RequestParam List<Category> categories) {
+        if(categories.isEmpty()) {
+            return foodService.getFoodByNameContaining(name, PageRequest.of(page, size));
+        }
         return foodService.getFoodByNameContainingAndCategory(name, PageRequest.of(page, size), categories);
     }
 }

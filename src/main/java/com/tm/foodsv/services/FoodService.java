@@ -62,4 +62,9 @@ public class FoodService {
         return page;
     }
 
+    public Page<Food> getFoodByNameContaining(String name, PageRequest pageable) {
+        Page<Food> page = foodRepository.findByNameContaining(name, pageable);
+        return page;
+    }
+
 }
