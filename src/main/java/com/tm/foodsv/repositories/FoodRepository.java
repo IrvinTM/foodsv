@@ -3,6 +3,8 @@ package com.tm.foodsv.repositories;
 import com.tm.foodsv.entities.Category;
 import com.tm.foodsv.entities.Food;
 import com.tm.foodsv.entities.NovaClasification;
+import com.tm.foodsv.util.PageDTO;
+
 //checar imports si son correctos
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,9 +14,13 @@ import java.util.List;
 
 @Repository
 public interface FoodRepository extends JpaRepository<Food, Integer> {
-    List<Food> findByName(String name);
-    List<Food> findByCategory(Category category);
-    List<Food> findByNovaClasification(NovaClasification novaClasification);
-    Page<Food> findByNameContaining(String name, Pageable pageable);
-    Page<Food> findByNameContainingAndCategoryIn(String name, List<Category> categories, Pageable pageable);
+	List<Food> findByName(String name);
+
+	List<Food> findByCategory(Category category);
+
+	List<Food> findByNovaClasification(NovaClasification novaClasification);
+
+	Page<Food> findByNameContaining(String name, Pageable pageable);
+
+	Page<Food> findByNameContainingAndCategoryIn(String name, List<Category> categories, Pageable pageable);
 }

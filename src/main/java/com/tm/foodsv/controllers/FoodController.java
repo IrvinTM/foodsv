@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/foods")
@@ -28,10 +29,11 @@ public class FoodController {
     }
 
     @GetMapping
-    public Page<Food> getFoods(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
-        return foodService.getAllFoods(PageRequest.of(page, size));
+    public PageDTO<Food> getFoods(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        Page<Food> pageReq = foodService.getAllFoods(PageRequest.of(page, size));
+        return new PageDTO<Food>(pageReq);
     }
-
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/add")
@@ -39,7 +41,6 @@ public class FoodController {
         foodService.addFood(food);
         return food;
     }
-
 
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("/update")
@@ -72,6 +73,7 @@ public class FoodController {
             return foods;
         }
     }
+
     @GetMapping("/group/{novaClasification}")
     public List<Food> getFoodByNovaClasification(@PathVariable NovaClasification novaClasification) {
         List<Food> foods = foodService.getFoodByNovaClasification(novaClasification);
@@ -81,12 +83,17 @@ public class FoodController {
             return foods;
         }
     }
-    
+
     @GetMapping("/search")
-    public Page<Food> getFoodByNameContainingAndCategory(@RequestParam String name, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @RequestParam List<Category> categories) {
-        if(categories.isEmpty()) {
-            return foodService.getFoodByNameContaining(name, PageRequest.of(page, size));
+    public PageDTO<Food> getFoodByNameContainingAndCategory(@RequestParam String name,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size,
+            @RequestParam List<Category> categories) {
+        if (categories.isEmpty()) {
+            Page<Food> pageReq = foodService.getFoodByNameContaining(name, PageRequest.of(page, size));
+            return new PageDTO<Food>(pageReq);
         }
-        return foodService.getFoodByNameContainingAndCategory(name, PageRequest.of(page, size), categories);
+        Page<Food> pageReq = foodService.getFoodByNameContainingAndCategory(name, PageRequest.of(page, size),
+                categories);
+        return new PageDTO<Food>(pageReq);
     }
 }

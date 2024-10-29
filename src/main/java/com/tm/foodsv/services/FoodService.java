@@ -4,6 +4,7 @@ import com.tm.foodsv.entities.Category;
 import com.tm.foodsv.entities.Food;
 import com.tm.foodsv.entities.NovaClasification;
 import com.tm.foodsv.util.LabelingSystem;
+import com.tm.foodsv.util.PageDTO;
 import com.tm.foodsv.repositories.FoodRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public class FoodService {
         LabelingSystem.addLabels(food);
         if (!foodRepository.findByName(food.getName()).isEmpty()) {
             throw new IllegalStateException("Food with name " + food.getName() + " already exists");
-        }else {
+        } else {
             foodRepository.save(food);
         }
     }
@@ -57,8 +58,9 @@ public class FoodService {
         foodRepository.save(food);
     }
 
-    public Page<Food> getFoodByNameContainingAndCategory(String name, PageRequest pageable, List<Category> categories) {
-        Page<Food> page = foodRepository.findByNameContainingAndCategoryIn(name, categories, pageable); 
+    public Page<Food> getFoodByNameContainingAndCategory(String name, PageRequest pageable,
+            List<Category> categories) {
+        Page<Food> page = foodRepository.findByNameContainingAndCategoryIn(name, categories, pageable);
         return page;
     }
 
