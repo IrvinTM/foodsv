@@ -1,14 +1,11 @@
 package com.tm.foodsv.util;
 
 import java.util.List;
-
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 public class PageDTO<T> {
     private List<T> content;
-    private PageableDTO pageable;
     private int totalPages;
     private long totalElements;
     private boolean last;
@@ -18,76 +15,6 @@ public class PageDTO<T> {
     private boolean first;
     private int numberOfElements;
     private boolean empty;
-
-    // Clase interna para Pageable
-    public static class PageableDTO {
-        private int pageNumber;
-        private int pageSize;
-        private SortDTO sort;
-        private long offset;
-        private boolean paged;
-        private boolean unpaged;
-
-        // Constructor
-        public PageableDTO(Pageable pageable) {
-            this.pageNumber = pageable.getPageNumber();
-            this.pageSize = pageable.getPageSize();
-            this.sort = new SortDTO(pageable.getSort());
-            this.offset = pageable.getOffset();
-            this.paged = true;
-            this.unpaged = false;
-        }
-
-		public int getPageNumber() {
-			return pageNumber;
-		}
-
-		public void setPageNumber(int pageNumber) {
-			this.pageNumber = pageNumber;
-		}
-
-		public int getPageSize() {
-			return pageSize;
-		}
-
-		public void setPageSize(int pageSize) {
-			this.pageSize = pageSize;
-		}
-
-		public SortDTO getSort() {
-			return sort;
-		}
-
-		public void setSort(SortDTO sort) {
-			this.sort = sort;
-		}
-
-		public long getOffset() {
-			return offset;
-		}
-
-		public void setOffset(long offset) {
-			this.offset = offset;
-		}
-
-		public boolean isPaged() {
-			return paged;
-		}
-
-		public void setPaged(boolean paged) {
-			this.paged = paged;
-		}
-
-		public boolean isUnpaged() {
-			return unpaged;
-		}
-
-		public void setUnpaged(boolean unpaged) {
-			this.unpaged = unpaged;
-		}
-
-
-    }
 
     // Clase interna para Sort
     public static class SortDTO {
@@ -132,7 +59,6 @@ public class PageDTO<T> {
     // Constructor que convierte Page<T> a CustomPageDTO<T>
     public PageDTO(Page<T> page) {
         this.content = page.getContent();
-        this.pageable = new PageableDTO(page.getPageable());
         this.totalPages = page.getTotalPages();
         this.totalElements = page.getTotalElements();
         this.last = page.isLast();
@@ -151,14 +77,6 @@ public class PageDTO<T> {
 
     public void setContent(List<T> content) {
         this.content = content;
-    }
-
-    public PageableDTO getPageable() {
-        return pageable;
-    }
-
-    public void setPageable(PageableDTO pageable) {
-        this.pageable = pageable;
     }
 
     public int getTotalPages() {

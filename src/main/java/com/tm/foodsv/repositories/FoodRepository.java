@@ -3,7 +3,6 @@ package com.tm.foodsv.repositories;
 import com.tm.foodsv.entities.Category;
 import com.tm.foodsv.entities.Food;
 import com.tm.foodsv.entities.NovaClasification;
-import com.tm.foodsv.util.PageDTO;
 
 //checar imports si son correctos
 import org.springframework.data.domain.Page;

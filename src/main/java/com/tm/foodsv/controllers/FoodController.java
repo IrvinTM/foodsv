@@ -23,7 +23,6 @@ public class FoodController {
 
     private final FoodService foodService;
 
-    @Autowired
     public FoodController(FoodService foodService) {
         this.foodService = foodService;
     }
