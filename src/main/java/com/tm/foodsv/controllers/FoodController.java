@@ -41,11 +41,7 @@ public class FoodController {
     @Value("${google.client.id}")
     private String clientId;
 
-    private GoogleIdTokenVerifier verifier = new
-        GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
-        .setAudience(Collections.singletonList(clientId))
-        .build();
-
+    
     @GetMapping
     public PageDTO<Food> getFoods(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
@@ -55,7 +51,15 @@ public class FoodController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addFood(@Valid @RequestBody Food food, @RequestHeader("Authorization") String authHeader) {
+ GoogleIdTokenVerifier verifier = new
+        GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
+        .setAudience(Collections.singletonList(clientId))
+        .build();
+
         String token = authHeader.replace("Bearer ", "");
+        System.out.println("this is the token receive raw "+ token);
+        System.out.println("the clientid is"+ clientId);
+        System.out.println("the admin email is "+ adminEmail);
 
             GoogleIdToken idToken;
             String email;
@@ -63,6 +67,7 @@ public class FoodController {
             try {
                 
             idToken = verifier.verify(token);
+            System.out.println("this is the id token created  "+ idToken);
             } catch (Exception e) {
                return ResponseEntity.badRequest().body("Internal error"+ e.toString());
             }
@@ -71,6 +76,7 @@ public class FoodController {
 
              GoogleIdToken.Payload payload = idToken.getPayload();
             email = payload.getEmail();
+            System.out.println("the email is "+ email);
 
             if (email.equals(adminEmail)){
                 foodService.addFood(food);

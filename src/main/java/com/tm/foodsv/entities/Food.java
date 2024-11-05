@@ -2,6 +2,8 @@ package com.tm.foodsv.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tm.foodsv.util.Warnings;
+
+import io.opencensus.tags.propagation.TagContextTextFormat.Getter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -22,7 +24,7 @@ public class Food {
     private String name;
     @NotNull
     private URL image;
-    @Length(min = 10, max = 150)
+    @NotEmpty
     private String description;
     @NotNull
     private Category category;
@@ -66,7 +68,15 @@ public class Food {
         return name;
     }
 
-    public void setName(@NotEmpty String name) {
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setName(@NotEmpty String name) {
         this.name = name;
     }
 
