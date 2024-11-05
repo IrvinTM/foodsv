@@ -1,5 +1,10 @@
 package com.tm.foodsv.controllers;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.auth.oauth2.GooglePublicKeysManager;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import com.tm.foodsv.entities.Category;
 import com.tm.foodsv.entities.Food;
 import com.tm.foodsv.entities.NovaClasification;
@@ -9,11 +14,14 @@ import com.tm.foodsv.util.PageDTO;
 import org.springframework.data.domain.PageRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.List;
 
 @CrossOrigin
@@ -27,6 +35,17 @@ public class FoodController {
         this.foodService = foodService;
     }
 
+    @Value("${panel.admin.email}")
+    private String adminEmail;
+
+    @Value("${google.client.id}")
+    private String clientId;
+
+    private GoogleIdTokenVerifier verifier = new
+        GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
+        .setAudience(Collections.singletonList(clientId))
+        .build();
+
     @GetMapping
     public PageDTO<Food> getFoods(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
@@ -34,14 +53,39 @@ public class FoodController {
         return new PageDTO<Food>(pageReq);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/add")
-    public Food addFood(@Valid @RequestBody Food food) {
-        foodService.addFood(food);
-        return food;
+    public ResponseEntity<String> addFood(@Valid @RequestBody Food food, @RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+
+            GoogleIdToken idToken;
+            String email;
+
+            try {
+                
+            idToken = verifier.verify(token);
+            } catch (Exception e) {
+               return ResponseEntity.badRequest().body("Internal error"+ e.toString());
+            }
+
+            if(idToken != null){
+
+             GoogleIdToken.Payload payload = idToken.getPayload();
+            email = payload.getEmail();
+
+            if (email.equals(adminEmail)){
+                foodService.addFood(food);
+                return ResponseEntity.ok("Food Added");
+
+            }else{
+                    System.out.println("the email is "+ email);
+                return ResponseEntity.badRequest().body("Error");
+            }
+            }else{
+                return ResponseEntity.badRequest().body("idtoken is null");
+            }
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+    /* @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("/update")
     public void updateFood(@RequestBody Food food) {
         foodService.updateFood(food);
@@ -81,7 +125,7 @@ public class FoodController {
         } else {
             return foods;
         }
-    }
+    } */
 
     @GetMapping("/search")
     public PageDTO<Food> getFoodByNameContainingAndCategory(@RequestParam String name,

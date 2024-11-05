@@ -1,0 +1,10 @@
+spring.application.name=foodsv
+
+# db
+spring.datasource.url=jdbc:postgresql://dbdomain:5432/mydb
+spring.datasource.username=mydbusername
+spring.datasource.password=passwordexample
+spring.datasource.driver-class-name=org.postgresql.Driver
+#JPA hibernate
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect

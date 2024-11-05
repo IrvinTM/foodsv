@@ -9,6 +9,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.validator.constraints.Length;
+
 @Entity
 @Table(name = "foods")
 public class Food {
@@ -20,6 +22,8 @@ public class Food {
     private String name;
     @NotNull
     private URL image;
+    @Length(min = 10, max = 150)
+    private String description;
     @NotNull
     private Category category;
     @Column(name = "nova_group")
