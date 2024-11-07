@@ -42,14 +42,14 @@ public class FoodController {
     private String clientId;
 
     
-    @CrossOrigin(origins = {"https://alimentos.archbtw.site", "http://localhost:5173"})
+    @CrossOrigin
     @GetMapping
     public PageDTO<Food> getFoods(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
         Page<Food> pageReq = foodService.getAllFoods(PageRequest.of(page, size));
         return new PageDTO<Food>(pageReq);
     }
-    @CrossOrigin(origins = {"https://alimentos.archbtw.site", "http://localhost:5173"})
+    @CrossOrigin
     @PostMapping("/add")
     public ResponseEntity<String> addFood(@Valid @RequestBody Food food, @RequestHeader("Authorization") String authHeader) {
  GoogleIdTokenVerifier verifier = new
