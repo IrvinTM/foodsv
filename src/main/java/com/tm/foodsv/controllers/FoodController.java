@@ -134,6 +134,7 @@ public class FoodController {
         }
     } */
 
+    @CrossOrigin
     @GetMapping("/search")
     public PageDTO<Food> getFoodByNameContainingAndCategory(@RequestParam String name,
             @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size,
