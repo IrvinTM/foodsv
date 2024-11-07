@@ -8,6 +8,8 @@ import com.tm.foodsv.entities.NovaClasification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
@@ -21,5 +23,8 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
 
 	Page<Food> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
-	Page<Food> findByNameContainingAndCategoryInIgnoreCase(String name, List<Category> categories, Pageable pageable);
+
+@Query("SELECT f FROM Food f WHERE LOWER(f.name) LIKE LOWER(CONCAT('%', :name, '%')) AND f.category IN :categories")
+Page<Food> findByNameContainingAndCategoryInIgnoreCase(@Param("name") String name, @Param("categories") List<Category> categories, Pageable pageable);
+
 }
