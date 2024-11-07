@@ -60,12 +60,12 @@ public class FoodService {
 
     public Page<Food> getFoodByNameContainingAndCategory(String name, PageRequest pageable,
             List<Category> categories) {
-        Page<Food> page = foodRepository.findByNameContainingAndCategoryIn(name, categories, pageable);
+        Page<Food> page = foodRepository.findByNameContainingAndCategoryInIgnoreCase(name, categories, pageable);
         return page;
     }
 
     public Page<Food> getFoodByNameContaining(String name, PageRequest pageable) {
-        Page<Food> page = foodRepository.findByNameContaining(name, pageable);
+        Page<Food> page = foodRepository.findByNameContainingIgnoreCase(name, pageable);
         return page;
     }
 

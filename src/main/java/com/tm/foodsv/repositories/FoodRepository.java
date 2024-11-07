@@ -19,7 +19,7 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
 
 	List<Food> findByNovaClasification(NovaClasification novaClasification);
 
-	Page<Food> findByNameContaining(String name, Pageable pageable);
+	Page<Food> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
-	Page<Food> findByNameContainingAndCategoryIn(String name, List<Category> categories, Pageable pageable);
+	Page<Food> findByNameContainingAndCategoryInIgnoreCase(String name, List<Category> categories, Pageable pageable);
 }
