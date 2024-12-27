@@ -15,6 +15,7 @@ import java.util.List;
 
 @Repository
 public interface FoodRepository extends JpaRepository<Food, Integer> {
+
 	List<Food> findByName(String name);
 
 	List<Food> findByCategory(Category category);
@@ -23,8 +24,11 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
 
 	Page<Food> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
+	@Query("SELECT f FROM Food f ORDER BY function('RANDOM')")
+	Page<Food> findAllRamdom(Pageable pageable);
 
-@Query("SELECT f FROM Food f WHERE LOWER(f.name) LIKE LOWER(CONCAT('%', :name, '%')) AND f.category IN :categories")
-Page<Food> findByNameContainingAndCategoryInIgnoreCase(@Param("name") String name, @Param("categories") List<Category> categories, Pageable pageable);
+	@Query("SELECT f FROM Food f WHERE LOWER(f.name) LIKE LOWER(CONCAT('%', :name, '%')) AND f.category IN :categories")
+	Page<Food> findByNameContainingAndCategoryInIgnoreCase(@Param("name") String name,
+			@Param("categories") List<Category> categories, Pageable pageable);
 
 }

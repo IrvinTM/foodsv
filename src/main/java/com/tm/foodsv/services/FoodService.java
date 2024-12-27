@@ -4,9 +4,9 @@ import com.tm.foodsv.entities.Category;
 import com.tm.foodsv.entities.Food;
 import com.tm.foodsv.entities.NovaClasification;
 import com.tm.foodsv.util.LabelingSystem;
-import com.tm.foodsv.util.PageDTO;
 import com.tm.foodsv.repositories.FoodRepository;
 import jakarta.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class FoodService {
     }
 
     public Page<Food> getAllFoods(PageRequest pageable) {
-        Page<Food> page = foodRepository.findAll(pageable);
+        Page<Food> page = foodRepository.findAllRamdom(pageable);
         return page;
     }
 
